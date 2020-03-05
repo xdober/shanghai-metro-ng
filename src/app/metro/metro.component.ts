@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient,HttpRequest } from "@angular/common/http";
-import { ConfigService } from "../config/config.service";
+import { ConfigService } from "../service/config/config.service";
 import { Line, LineDetail, StationDirection } from "../../tools/data";
 import { animate,trigger,transition,query,stagger,style, keyframes } from "@angular/animations";
 
