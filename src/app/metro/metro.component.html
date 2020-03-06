@@ -28,15 +28,14 @@
         </mat-grid-tile>
       </mat-grid-list>
     
-<mat-list dense [@listAnimation]="stations.length"
-(@listAnimation.start)="logAnimation($event)"
-(@listAnimation.done)="logAnimation($event)">
+<mat-list dense [@listAnimation]="currentLineStations"
+>
     <mat-list-item class="center" style="line-height: 2em;">
          <mat-icon class="mat-18">train</mat-icon> <h3>Line {{currentLine.line_no===0?'':(currentLine.line_no===41?'浦江':currentLine.line_no)}}</h3>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-divider></mat-divider>
-    <mat-list-item *ngFor="let station of stations" style="min-width: 490px;">
+    <mat-list-item *ngFor="let station of currentLineStations" style="min-width: 490px;">
         <mat-icon class="mat-18" [ngStyle]="{'color':currentLine.color}">trip_origin</mat-icon> <h4  class="name">{{station.title}}</h4> <span class="transfer" 
         [ngStyle]="{'background-color': trans.color}"
         *ngFor="let trans of station.transfer"><span> {{trans.line_no===41?"浦江线":(trans.line_no+"号线")}}</span> </span>

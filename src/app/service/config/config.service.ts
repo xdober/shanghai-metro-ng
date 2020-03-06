@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { LineDetail, StationDirection } from 'src/tools/data';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,11 @@ export class ConfigService {
     return this.http.get(this.getLinesUrl);
   }
 
-  getLineStations(lineNo:number){
-    return this.http.get(this.getLineStationUrl+lineNo)
+  getLineStations(lineNo:number) {
+    return this.http.get<LineDetail>(this.getLineStationUrl+lineNo)
   }
 
   getLineExfStations(lineNo:number){
-    return this.http.get(this.getLineExfStationsUrl+lineNo)
+    return this.http.get<StationDirection[]>(this.getLineExfStationsUrl+lineNo)
   }
 }

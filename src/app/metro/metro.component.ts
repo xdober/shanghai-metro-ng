@@ -3,6 +3,7 @@ import { HttpClient,HttpRequest } from "@angular/common/http";
 import { ConfigService } from "../service/config/config.service";
 import { Line, LineDetail, StationDirection } from "../../tools/data";
 import { animate,trigger,transition,query,stagger,style, keyframes } from "@angular/animations";
+import { StationService } from "../service/station/station.service";
 
 @Component({
   selector: 'app-metro',
@@ -13,13 +14,13 @@ import { animate,trigger,transition,query,stagger,style, keyframes } from "@angu
       transition('* => *', [ // each time the binding value changes
         query(':leave', [
           stagger(10, [
-            animate('0.5s', style({ height: 0 }))
+            animate('0.5s', style({ height: 0,opacity:0 }))
           ])
         ], { optional: true }),
         query(':enter', [
-          style({ height: 100 }),
           stagger(10, [
-            animate('0.2s' , style({ height: 40 }))
+            style({opacity:0}),
+            animate('0.5s' , style({ opacity: 1 }))
           ])
         ], { optional: true })
       ])
@@ -32,9 +33,9 @@ export class MetroComponent implements OnInit {
   lines:Line[] = [];
   cols=8;
   currentLine=new Line();
-  stations = [];
+  currentLineStations = [];
 
-  constructor(private _http:HttpClient,private configService:ConfigService) { }
+  constructor(private _http:HttpClient,private configService:ConfigService,private stationService:StationService) { }
 
   ngOnInit(): void {
     this.cols = (window.innerWidth <= 800) ? 4 : 8;
@@ -59,38 +60,24 @@ export class MetroComponent implements OnInit {
       console.log(data);
     })
   }
-  getLineStations(lineNo:number){
-    this.stations=[];
-    this.configService.getLineStations(lineNo)
-    .subscribe((date:LineDetail)=>{
-      this.stations = date.levels[0].locations;
-      this.stations.forEach(stati => {
-        stati.transfer=[];
-      });
-      this.getLineExfStations(lineNo);
-    })
-  }
-  getLineExfStations(lineNo:number){
-    this.configService.getLineExfStations(lineNo)
-    .subscribe((data:StationDirection[])=>{
-      debugger
-      data.forEach(element => {
-        if(element.line===this.currentLine.line_no){
-          return;
-        }
-        for (let index = 0; index < this.stations.length; index++) {
-          const stat = this.stations[index];
-          if( this.stations[index].transfer.filter(x=>{
-            return x.line_no===element.line
-          }).length===0 && stat.title===element.name){
-            let newLine = this.lines.filter(e=>{
-              return e.line_no===element.line
-            })[0]
-            this.stations[index].transfer.push(newLine)
-          }
-        }
-      });
-    })
+  async getLineStations(lineNo:number){
+    this.currentLineStations=[];
+    let curLine=this.lines.filter((line:Line)=>{return line.line_no===lineNo})[0]
+    if(curLine && curLine.stations && curLine.stations.length>0){
+      this.currentLineStations = curLine.stations;
+      return;
+    }
+    let lineDetail = await this.configService.getLineStations(lineNo).toPromise();
+    //先加载出站点
+    this.currentLineStations = lineDetail.levels[0].locations;
+
+    curLine.stations=lineDetail.levels[0].locations;
+    // curLine.stations.forEach(e=>{ e.transfer=[]})
+
+    let transfers = await this.configService.getLineExfStations(lineNo).toPromise();
+    this.stationService.addTransferForLine(curLine,transfers,this.lines);
+    this.currentLineStations = curLine.stations;
+    
   }
 
 }

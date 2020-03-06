@@ -2,6 +2,8 @@ export class Line {
     line_no:number;
     color:string;
     bgcolor:string;
+    title:string;
+    stations:Station[];
 }
 
 export class Station{
