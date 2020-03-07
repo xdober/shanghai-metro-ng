@@ -14,19 +14,25 @@ import { HttpClientModule } from "@angular/common/http";
 import { MatGridListModule} from "@angular/material/grid-list";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
+import { HomeComponent } from './home/home.component';
+import { MatToolbarModule } from "@angular/material/toolbar";
+import {MatButtonModule} from '@angular/material/button';
+import { RouterModule, Routes } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListComponent,
-    MetroComponent
+    MetroComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatTabsModule, MatIconModule, MatListModule,MatGridListModule,MatButtonToggleModule,MatSidenavModule,
-    HttpClientModule
+    MatToolbarModule,MatButtonModule,
+    HttpClientModule,RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
