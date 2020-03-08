@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule, Routes } from '@angular/router';
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { RouterModule, Routes } from '@angular/router';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatTabsModule, MatIconModule, MatListModule,MatGridListModule,MatButtonToggleModule,MatSidenavModule,
-    MatToolbarModule,MatButtonModule,
+    MatToolbarModule,MatButtonModule,MatSelectModule,
     HttpClientModule,RouterModule
   ],
   providers: [],

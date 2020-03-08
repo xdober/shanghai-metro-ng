@@ -1,45 +1,60 @@
 <h1 class="center"> <img class="logo" src="../../assets/shmetro_logo.png" alt=""> Welcome to Shanghai Metro</h1>
-<mat-tab-group [disableRipple]="false"
-    mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4"
-    dynamicHeight>
+<mat-tab-group [disableRipple]="false" mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4" dynamicHeight>
     <mat-tab *ngFor="let tab of tabs;let i = index">
         <ng-template mat-tab-label>
             <mat-icon class="example-tab-icon">{{tab.icon}}</mat-icon>
             {{tab.title}}
-          </ng-template>
+        </ng-template>
 
-          <div *ngIf="i===1">
-          </div>
+        <div *ngIf="i===1">
+            <ng-container *ngTemplateOutlet="pathAndPrice"></ng-container>
+        </div>
 
-          <div *ngIf="i===0">
-              <ng-container *ngTemplateOutlet="linesAndStations"></ng-container>
-          </div>
+        <div *ngIf="i===0">
+            <ng-container *ngTemplateOutlet="linesAndStations"></ng-container>
+        </div>
 
     </mat-tab>
 </mat-tab-group>
 
 <ng-template #linesAndStations>
     <mat-grid-list [cols]="cols" rowHeight="2:1" role="list" (window:resize)="onResize($event)">
-        <mat-grid-tile class="line_grid" role="listitem" *ngFor="let line of lines" 
-        [ngStyle]="{'background-color': line.color}"
-        (click)="lineGridClick(line)"
-        >
-        {{(line.line_no===41?'浦江线': line.line_no+'号线')}}
+        <mat-grid-tile class="line_grid" role="listitem" *ngFor="let line of lines"
+            [ngStyle]="{'background-color': line.color}" (click)="lineGridClick(line)">
+            {{(line.line_no===41?'浦江线': line.line_no+'号线')}}
         </mat-grid-tile>
-      </mat-grid-list>
-    
-<mat-list dense [@listAnimation]="currentLineStations"
->
-    <mat-list-item class="center" style="line-height: 2em;">
-         <mat-icon class="mat-18">train</mat-icon> <h3>Line {{currentLine.line_no===0?'':(currentLine.line_no===41?'浦江':currentLine.line_no)}}</h3>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <mat-divider></mat-divider>
-    <mat-list-item *ngFor="let station of currentLineStations" style="min-width: 490px;">
-        <mat-icon class="mat-18" [ngStyle]="{'color':currentLine.color}">trip_origin</mat-icon> <h4  class="name">{{station.title}}</h4> <span class="transfer" 
-        [ngStyle]="{'background-color': trans.color}"
-        *ngFor="let trans of station.transfer"><span> {{trans.line_no===41?"浦江线":(trans.line_no+"号线")}}</span> </span>
-    </mat-list-item>
-</mat-list>
+    </mat-grid-list>
+
+    <mat-list dense [@listAnimation]="currentLineStations">
+        <mat-list-item class="center" style="line-height: 2em;">
+            <mat-icon class="mat-18">train</mat-icon>
+            <h3>Line {{currentLine.line_no===0?'':(currentLine.line_no===41?'浦江':currentLine.line_no)}}</h3>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
+        <mat-list-item *ngFor="let station of currentLineStations" style="min-width: 490px;">
+            <mat-icon class="mat-18" [ngStyle]="{'color':currentLine.color}">trip_origin</mat-icon>
+            <h4 class="name">{{station.title}}</h4> <span class="transfer" [ngStyle]="{'background-color': trans.color}"
+                *ngFor="let trans of station.transfer"><span> {{trans.line_no===41?"浦江线":(trans.line_no+"号线")}}</span>
+            </span>
+        </mat-list-item>
+    </mat-list>
 </ng-template>
 
+<ng-template #pathAndPrice>
+    <mat-form-field>
+        <mat-select placeholder="请选择线路" [(value)]="startLine">
+            <mat-option *ngFor="let line of lines" [value]="line">
+                {{line.title}}
+            </mat-option>
+        </mat-select>
+        <h4>start</h4>
+        <mat-select placeholder="请选择站点" [(value)]="startStation">
+            <mat-option *ngFor="let station of startLine.stations" [value]="station">
+                {{station.title}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div>you selected {{startLine.title}}</div>
+
+</ng-template>

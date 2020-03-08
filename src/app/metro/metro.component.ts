@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient,HttpRequest } from "@angular/common/http";
 import { ConfigService } from "../service/config/config.service";
-import { Line, LineDetail, StationDirection } from "../../tools/data";
+import { Line, LineDetail, StationDirection, Station } from "../../tools/data";
 import { animate,trigger,transition,query,stagger,style, keyframes } from "@angular/animations";
 import { StationService } from "../service/station/station.service";
 
@@ -35,6 +35,11 @@ export class MetroComponent implements OnInit {
   currentLine=new Line();
   currentLineStations = [];
 
+  startLine = new Line();
+  startStation=new Station();
+  distLine = new Line();
+  distStation = new Station();
+
   constructor(private _http:HttpClient,private configService:ConfigService,private stationService:StationService) { }
 
   ngOnInit(): void {
@@ -57,6 +62,7 @@ export class MetroComponent implements OnInit {
     this.configService.getLines()
     .subscribe((data:Line[])=>{
       this.lines = data;
+      this.stationService.produceLineTitle(this.lines);
       console.log(data);
     })
   }
