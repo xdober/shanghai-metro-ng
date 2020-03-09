@@ -42,19 +42,24 @@
 </ng-template>
 
 <ng-template #pathAndPrice>
-    <mat-form-field>
-        <mat-select placeholder="请选择线路" [(value)]="startLine">
-            <mat-option *ngFor="let line of lines" [value]="line">
-                {{line.title}}
-            </mat-option>
-        </mat-select>
-        <h4>start</h4>
-        <mat-select placeholder="请选择站点" [(value)]="startStation">
-            <mat-option *ngFor="let station of startLine.stations" [value]="station">
-                {{station.title}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <div>you selected {{startLine.title}}</div>
+    <form action="">
+            <h4>起点：</h4>
+        <mat-form-field>
+            <mat-select placeholder="请选择线路" [(value)]="startLine">
+                <mat-option *ngFor="let line of lines" [value]="line">
+                    {{line.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="请选择站点" [(value)]="startStation">
+                <mat-option *ngFor="let station of startLine.stations" [value]="station">
+                    {{station.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div>you selected {{startLine.title}} - {{startStation.title}}</div>
+    </form>
+
 
 </ng-template>
