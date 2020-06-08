@@ -37,6 +37,8 @@ export class MetroComponent implements OnInit {
 
   startLine = new Line();
   startStation=new Station();
+  endLine = new Line();
+  endStation=new Station();
   distLine = new Line();
   distStation = new Station();
 
