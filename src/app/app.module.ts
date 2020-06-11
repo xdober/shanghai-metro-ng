@@ -19,6 +19,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule, Routes } from '@angular/router';
 import { MatSelectModule } from "@angular/material/select";
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { MatSelectModule } from "@angular/material/select";
     MatToolbarModule,MatButtonModule,MatSelectModule,
     HttpClientModule,RouterModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
